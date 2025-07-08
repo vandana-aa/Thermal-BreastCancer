@@ -1,70 +1,89 @@
-# Getting Started with Create React App
+# 🔬 Thermal Breast Cancer Detection
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack web application for breast cancer screening using thermal imaging. Built with **Flask (backend)** and **React (frontend)**, it uses deep learning models for segmentation and classification of thermal breast images.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🌐 Live Demo
 
-### `npm start`
+- 🔸 Frontend (React): [https://thermal-breast-cancer.vercel.app](https://thermal-breast-cancer.vercel.app)  
+- 🔸 Backend (Flask): [https://thermal-breastcancer-production.up.railway.app](https://thermal-breastcancer-production.up.railway.app)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🧠 Features
 
-### `npm test`
+- Upload thermal breast images
+- Segment breast region using a UNet model (`.h5`)
+- Split left and right breast regions
+- Classify each side as **Benign** or **Malignant** using a ConvNeXt-Tiny model (`.pth`)
+- View all processed images (segmented, left, right, original)
+- Confidence scores displayed alongside results
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🖼 Workflow Overview
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. User uploads a thermal breast image via the frontend.
+2. Image is sent to the Flask backend for processing.
+3. Backend:
+   - Segments breast region using a UNet model.
+   - Splits left and right regions.
+   - Classifies both using a ConvNeXt-Tiny model from `timm`.
+4. JSON response contains:
+   - Predicted labels (`Benign` / `Malignant`)
+   - Confidence scores
+   - URLs for segmented and classified images
+5. Frontend displays diagnosis + visual output.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🛠 Technologies Used
 
-### `npm run eject`
+### Frontend
+- React
+- TailwindCSS
+- Vercel (Deployment)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Backend
+- Flask
+- Flask-CORS
+- PyTorch
+- Keras / TensorFlow
+- `timm` (ConvNeXt)
+- Gunicorn (for production server)
+- Railway (Deployment)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🗂 Project Structure
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🚀 Deployment Instructions
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Backend (Flask) – Railway
+1. Push backend to GitHub
+2. Create Railway project → "Deploy from GitHub"
+3. Add a `Procfile`:
 
-### Code Splitting
+web: gunicorn app:app
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+4. Upload `.h5` and `.pth` model files via Railway shell:
+```bash
+mkdir -p models
+wget <your-model-url> -O models/unet_model.h5
+wget <your-model-url> -O models/convnext_tiny.fb_in22k_vmodel.pth
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Frontend (React) – Vercel
+1. Push React app to GitHub
 
-### Making a Progressive Web App
+2. Create Vercel project → Connect GitHub
+3. Add environment variable:
+REACT_APP_API_URL=https://thermal-breastcancer-production.up.railway.app
+4. Build and deploy
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
