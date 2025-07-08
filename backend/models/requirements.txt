@@ -1,0 +1,10 @@
+Flask
+Flask-Cors
+torch
+torchvision
+timm
+tensorflow
+keras
+Pillow
+numpy
+gunicorn
